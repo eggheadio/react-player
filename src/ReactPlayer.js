@@ -8,6 +8,7 @@ import FilePlayer from './players/FilePlayer'
 import Streamable from './players/Streamable'
 import Vidme from './players/Vidme'
 import Wistia from './players/Wistia'
+import Bitmovin from './players/Bitmovin'
 
 export default class ReactPlayer extends Component {
   static displayName = 'ReactPlayer'
@@ -56,18 +57,13 @@ export default class ReactPlayer extends Component {
   }
   renderPlayers () {
     // Build array of players to render based on URL and preload config
+    console.log(url)
     const { url, youtubeConfig, vimeoConfig } = this.props
     const players = []
     if (YouTube.canPlay(url)) {
       players.push(YouTube)
-    } else if (SoundCloud.canPlay(url)) {
-      players.push(SoundCloud)
-    } else if (Vimeo.canPlay(url)) {
-      players.push(Vimeo)
-    } else if (Streamable.canPlay(url)) {
-      players.push(Streamable)
-    } else if (Vidme.canPlay(url)) {
-      players.push(Vidme)
+    } else if (Bitmovin.canPlay(url)) {
+      players.push(Bitmovin)
     } else if (Wistia.canPlay(url)) {
       players.push(Wistia)
     } else if (url) {
@@ -103,6 +99,7 @@ export default class ReactPlayer extends Component {
   }
   render () {
     const { style, width, height, className, hidden } = this.props
+    console.log("SANNNIIIITTYYYYY")
     const players = this.renderPlayers()
     return (
       <div style={{ ...style, width, height }} className={className} hidden={hidden}>

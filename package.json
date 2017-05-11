@@ -6,6 +6,7 @@
   "typings": "index.d.ts",
   "scripts": {
     "clean": "rimraf lib demo",
+    "dev": "onchange \"src\" -- yarn build:compile",
     "build:webpack": "cross-env NODE_ENV=production webpack --config webpack.config.prod.js",
     "build:browser": "cross-env NODE_ENV=production webpack --config webpack.config.browser.js",
     "build:demo": "npm run clean && npm run build:webpack && cp index.html demo",
@@ -94,6 +95,7 @@
   "dependencies": {
     "fetch-jsonp": "^1.0.2",
     "load-script": "^1.0.0",
+    "onchange": "^3.2.1",
     "query-string": "^4.2.3"
   },
   "standard": {
