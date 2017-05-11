@@ -16,7 +16,6 @@ export default class Wistia extends Base {
   }
 
   getConfig() {
-    console.log('getting config')
     return {
       key: "56231f1a-2845-4d2e-a432-07436d3f4958",
       source: {
@@ -41,7 +40,6 @@ export default class Wistia extends Base {
         this.player.addEventHandler(this.player.EVENT.ON_PAUSE, onPause)
         this.player.addEventHandler(this.player.EVENT.ON_PLAYBACK_FINISHED, onEnded)
         this.onReady()
-        console.log("Successfully created bitdash player instance");
       }, (reason) => {
         console.error("Error while creating bitdash player instance", reason);
         return reason
@@ -50,13 +48,10 @@ export default class Wistia extends Base {
   }
 
   getSDK() {
-
-    console.log("GET THE SDK")
     return new Promise((resolve, reject) => {
       if (window[SDK_GLOBAL]) {
         resolve()
       } else {
-        console.log('loading script')
         loadScript(SDK_URL, {async: false}, (err, script) => {
           if (err) reject(err)
           resolve(script)
@@ -80,7 +75,6 @@ export default class Wistia extends Base {
 
   play() {
     if (!this.isReady || !this.player) return
-    console.log('PLAYING!!!!')
     this.player.play()
   }
 

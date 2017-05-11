@@ -57,7 +57,6 @@ export default class ReactPlayer extends Component {
   }
   renderPlayers () {
     // Build array of players to render based on URL and preload config
-    console.log(url)
     const { url, youtubeConfig, vimeoConfig } = this.props
     const players = []
     if (YouTube.canPlay(url)) {
@@ -99,7 +98,6 @@ export default class ReactPlayer extends Component {
   }
   render () {
     const { style, width, height, className, hidden } = this.props
-    console.log("SANNNIIIITTYYYYY")
     const players = this.renderPlayers()
     return (
       <div style={{ ...style, width, height }} className={className} hidden={hidden}>
