@@ -96,7 +96,7 @@
     "fetch-jsonp": "^1.0.2",
     "load-script": "^1.0.0",
     "onchange": "^3.2.1",
-    "query-string": "^4.2.3"
+    "query-string": "^4.2.3",
     "lodash.omit": "^4.5.0",
     "prop-types": "^15.5.6"
   },
