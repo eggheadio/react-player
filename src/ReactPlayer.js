@@ -10,7 +10,9 @@ import FilePlayer from './players/FilePlayer'
 import Streamable from './players/Streamable'
 import Vidme from './players/Vidme'
 import Wistia from './players/Wistia'
+import Bitmovin from './players/Bitmovin'
 import DailyMotion from './players/DailyMotion'
+
 
 export default class ReactPlayer extends Component {
   static displayName = 'ReactPlayer'
@@ -83,6 +85,8 @@ export default class ReactPlayer extends Component {
     const players = []
     if (YouTube.canPlay(url)) {
       players.push(YouTube)
+    } else if (Bitmovin.canPlay(url)) {
+      players.push(Bitmovin)
     } else if (SoundCloud.canPlay(url)) {
       players.push(SoundCloud)
     } else if (Vimeo.canPlay(url)) {
