@@ -1,9 +1,9 @@
-import { PropTypes } from 'react'
+import PropTypes from 'prop-types'
 
-const { string, bool, number, oneOfType, shape, object, func } = PropTypes
+const { string, bool, number, array, oneOfType, shape, object, func } = PropTypes
 
 export const propTypes = {
-  url: string,
+  url: oneOfType([ string, array ]),
   playing: bool,
   loop: bool,
   controls: bool,
@@ -11,10 +11,9 @@ export const propTypes = {
   playbackRate: number,
   width: oneOfType([ string, number ]),
   height: oneOfType([ string, number ]),
-  hidden: bool,
-  className: string,
   style: object,
   progressFrequency: number,
+  playsinline: bool,
   soundcloudConfig: shape({
     clientId: string,
     showArtwork: bool
@@ -23,12 +22,25 @@ export const propTypes = {
     playerVars: object,
     preload: bool
   }),
+  facebookConfig: shape({
+    appId: string
+  }),
+  dailymotionConfig: shape({
+    params: object,
+    preload: bool
+  }),
   vimeoConfig: shape({
     iframeParams: object,
     preload: bool
   }),
+  vidmeConfig: shape({
+    format: string
+  }),
   fileConfig: shape({
-    attributes: object
+    attributes: object,
+    forceAudio: bool,
+    forceHLS: bool,
+    forceDASH: bool
   }),
   onReady: func,
   onStart: func,
@@ -51,6 +63,7 @@ export const defaultProps = {
   height: 360,
   hidden: false,
   progressFrequency: 1000,
+  playsinline: false,
   soundcloudConfig: {
     clientId: 'e8b6f84fbcad14c301ca1355cae1dea2',
     showArtwork: true
@@ -59,12 +72,25 @@ export const defaultProps = {
     playerVars: {},
     preload: false
   },
+  facebookConfig: {
+    appId: '1309697205772819'
+  },
+  dailymotionConfig: {
+    params: {},
+    preload: false
+  },
   vimeoConfig: {
     iframeParams: {},
     preload: false
   },
+  vidmeConfig: {
+    format: null
+  },
   fileConfig: {
-    attributes: {}
+    attributes: {},
+    forceAudio: false,
+    forceHLS: false,
+    forceDASH: false
   },
   onReady: function () {},
   onStart: function () {},

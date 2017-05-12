@@ -11,6 +11,12 @@ import { version } from '../../package.json'
 import ReactPlayer from '../ReactPlayer'
 import Duration from './Duration'
 
+const MULTIPLE_SOURCES = [
+  { src: 'http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4', type: 'video/mp4' },
+  { src: 'http://clips.vorwaerts-gmbh.de/big_buck_bunny.ogv', type: 'video/ogv' },
+  { src: 'http://clips.vorwaerts-gmbh.de/big_buck_bunny.webm', type: 'video/webm' }
+]
+
 export default class App extends Component {
   state = {
     url: null,
@@ -176,6 +182,13 @@ export default class App extends Component {
               </td>
             </tr>
             <tr>
+              <th>Facebook</th>
+              <td>
+                {this.renderLoadButton('https://www.facebook.com/facebook/videos/10153231379946729/', 'Test A')}
+                {this.renderLoadButton('https://www.facebook.com/FacebookDevelopers/videos/10152454700553553/', 'Test B')}
+              </td>
+            </tr>
+            <tr>
               <th>Vimeo</th>
               <td>
                 {this.renderLoadButton('https://vimeo.com/90509568', 'Test A')}
@@ -204,11 +217,21 @@ export default class App extends Component {
               </td>
             </tr>
             <tr>
+              <th>DailyMotion</th>
+              <td>
+                {this.renderLoadButton('http://www.dailymotion.com/video/x26m1j4_wildlife_animals', 'Test A')}
+                {this.renderLoadButton('http://www.dailymotion.com/video/x26ezj5', 'Test B')}
+              </td>
+            </tr>
+            <tr>
               <th>Files</th>
               <td>
-                {this.renderLoadButton('http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4', 'MP4')}
-                {this.renderLoadButton('http://clips.vorwaerts-gmbh.de/big_buck_bunny.ogv', 'OGV')}
-                {this.renderLoadButton('http://clips.vorwaerts-gmbh.de/big_buck_bunny.webm', 'WEBM')}
+                {this.renderLoadButton('http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4', 'mp4')}
+                {this.renderLoadButton('http://clips.vorwaerts-gmbh.de/big_buck_bunny.ogv', 'ogv')}
+                {this.renderLoadButton('http://clips.vorwaerts-gmbh.de/big_buck_bunny.webm', 'webm')}
+                {this.renderLoadButton(MULTIPLE_SOURCES, 'Multiple')}
+                {this.renderLoadButton('https://bitdash-a.akamaihd.net/content/MI201109210084_1/m3u8s/f08e80da-bf1d-4e3d-8899-f0f6155f6efa.m3u8', 'HLS (m3u8)')}
+                {this.renderLoadButton('http://dash.edgesuite.net/envivio/EnvivioDash3/manifest.mpd', 'DASH (mpd)')}
               </td>
             </tr>
             <tr>
@@ -232,7 +255,9 @@ export default class App extends Component {
           <table><tbody>
             <tr>
               <th>url</th>
-              <td className={!url ? 'faded' : ''}>{url || 'null'}</td>
+              <td className={!url ? 'faded' : ''}>
+                {(url instanceof Array ? 'Multiple' : url) || 'null'}
+              </td>
             </tr>
             <tr>
               <th>playing</th>

@@ -7,7 +7,7 @@ import { parseStartTime } from '../utils'
 const SDK_URL = 'https://www.youtube.com/iframe_api'
 const SDK_GLOBAL = 'YT'
 const SDK_GLOBAL_READY = 'onYouTubeIframeAPIReady'
-const MATCH_URL = /^(?:https?:\/\/)?(?:www\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))((\w|-){11})(?:\S+)?$/
+const MATCH_URL = /^(?:https?:\/\/)?(?:www\.|m\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))((\w|-){11})(?:\S+)?$/
 const BLANK_VIDEO_URL = 'https://www.youtube.com/watch?v=GlCmAC4MHek'
 const DEFAULT_PLAYER_VARS = {
   autoplay: 0,
@@ -46,7 +46,7 @@ export default class YouTube extends Base {
     })
   }
   load (url) {
-    const { controls, youtubeConfig, onError } = this.props
+    const { playsinline, controls, youtubeConfig, onError } = this.props
     const id = url && url.match(MATCH_URL)[1]
     if (this.isReady) {
       this.player.cueVideoById({
@@ -70,13 +70,11 @@ export default class YouTube extends Base {
           controls: controls ? 1 : 0,
           start: parseStartTime(url),
           origin: window.location.origin,
+          playsinline: playsinline,
           ...youtubeConfig.playerVars
         },
         events: {
-          onReady: () => {
-            this.loadingSDK = false
-            this.onReady()
-          },
+          onReady: this.onReady,
           onStateChange: this.onStateChange,
           onError: event => onError(event.data)
         }
@@ -109,6 +107,7 @@ export default class YouTube extends Base {
   }
   stop () {
     if (!this.isReady || !this.player.stopVideo) return
+    if (!document.body.contains(this.player.getIframe())) return
     this.player.stopVideo()
   }
   seekTo (fraction) {
