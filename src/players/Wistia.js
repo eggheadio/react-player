@@ -98,7 +98,7 @@ export default class Wistia extends Base {
       display: this.props.url ? 'block' : 'none'
     }
     return (
-      <div className={className} style={style} dataVideoFoam={true} dataPlayerColor='171e27' />
+      <div className={className} style={style} />
     )
   }
 }
