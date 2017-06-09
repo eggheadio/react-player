@@ -100,6 +100,7 @@ export default class Wistia extends Base {
   }
 
   setPlaybackRate(rate) {
+    console.log('setPlaybackRate', rate, this.player, this.isReady)
     if (!this.isReady || !this.player || !this.player.setPlaybackSpeed) return
     this.player.setPlaybackSpeed(rate)
   }

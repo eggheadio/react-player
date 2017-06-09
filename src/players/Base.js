@@ -56,6 +56,7 @@ export default class Base extends Component {
   }
   onPlay = () => {
     const { volume, onStart, onPlay, onDuration, playbackRate } = this.props
+    console.log('ON PLAY', this.startOnPlay)
     if (this.startOnPlay) {
       this.setPlaybackRate(playbackRate)
       this.setVolume(volume)
