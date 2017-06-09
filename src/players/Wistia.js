@@ -91,14 +91,14 @@ export default class Wistia extends Base {
   }
   render () {
     const id = this.getID(this.props.url)
-    const className = `wistia_embed wistia_async_${id}`
+    const className = `wistia_embed wistia_async_${id} videoFoam=true playerColor=171e27`
     const style = {
       width: '100%',
       height: '100%',
       display: this.props.url ? 'block' : 'none'
     }
     return (
-      <div className={className} style={style} videoFoam={true} playerColor='171e27' />
+      <div className={className} style={style} dataVideoFoam={true} dataPlayerColor='171e27' />
     )
   }
 }
