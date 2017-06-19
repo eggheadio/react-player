@@ -13,7 +13,7 @@ export default class Wistia extends Base {
     return MATCH_URL.test(url)
   }
   componentDidMount () {
-    const { onStart, onPause, onEnded } = this.props
+    const { onStart, onPause, onEnded, onPlayerProgress } = this.props
     this.loadingSDK = true
     this.getSDK().then(() => {
       window._wq = window._wq || []
@@ -21,14 +21,29 @@ export default class Wistia extends Base {
         id: this.getID(this.props.url),
         onReady: player => {
           this.player = player
-          this.player.bind('start', onStart)
-          this.player.bind('play', this.onPlay)
-          this.player.bind('pause', onPause)
-          this.player.bind('end', onEnded)
+          this.rebind()
           this.onReady()
         }
       })
     })
+  }
+
+  rebind () {
+    const {onStart, onPause, onEnded, onPlayerProgress} = this.props
+    this.player.bind('start', onStart)
+    this.player.bind('play', this.onPlay)
+    this.player.bind('pause', onPause)
+    this.player.bind('end', onEnded)
+    this.player.bind('secondchange', onPlayerProgress)
+  }
+
+  unbind () {
+    const {onStart, onPause, onEnded, onPlayerProgress} = this.props
+    this.player.unbind('start', onStart)
+    this.player.unbind('play', this.onPlay)
+    this.player.unbind('pause', onPause)
+    this.player.unbind('end', onEnded)
+    this.player.unbind('secondchange', onPlayerProgress)
   }
   getSDK () {
     return new Promise((resolve, reject) => {
@@ -47,11 +62,18 @@ export default class Wistia extends Base {
   }
   load (url) {
     const id = this.getID(url)
-    if (this.isReady) {
-      this.player.replaceWith(id)
-      this.props.onReady()
-      this.onReady()
-    }
+    this.unbind()
+    this.player.replaceWith(id)
+    window._wq.push({
+      id: this.getID(url),
+      onReady: player => {
+        this.player = player
+        this.rebind()
+        this.props.onReady()
+        this.onReady()
+      }
+    })
+
   }
   play () {
     if (!this.isReady || !this.player) return

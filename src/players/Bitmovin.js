@@ -8,7 +8,7 @@ const SDK_URL = '//bitmovin-a.akamaihd.net/bitmovin-player/stable/7/bitmovinplay
 const SDK_GLOBAL = 'bitmovin'
 const MATCH_URL = /^(https?:\/\/d2c5owlt6rorc3.cloudfront.net\/)(.[^_]*)_(.[^/]*)\/(.*)$/
 
-export default class Wistia extends Base {
+export default class Bitmovin extends Base {
   static displayName = 'Bitmovin'
 
   static canPlay(url) {
@@ -26,7 +26,7 @@ export default class Wistia extends Base {
   }
 
   componentDidMount() {
-    const {onTimechange, onPause, onEnded} = this.props
+    const {onPause, onEnded, onPlayerProgress} = this.props
     const id = this.getID(this.props.url)
     const className = `bitmovin-player-${id}`
 
@@ -35,10 +35,10 @@ export default class Wistia extends Base {
       this.loadingSDK = false
       this.player = window.bitmovin.player(className);
       this.player.setup(this.getConfig()).then((value) => {
-        this.player.addEventHandler(this.player.EVENT.ON_TIME_CHANGED, onTimechange)
         this.player.addEventHandler(this.player.EVENT.ON_PLAY, this.onPlay)
         this.player.addEventHandler(this.player.EVENT.ON_PAUSE, onPause)
         this.player.addEventHandler(this.player.EVENT.ON_PLAYBACK_FINISHED, onEnded)
+        this.player.addEventHandler(this.player.EVENT.ON_TIME_CHANGED, onPlayerProgress)
         this.onReady()
       }, (reason) => {
         console.error("Error while creating bitdash player instance", reason);
