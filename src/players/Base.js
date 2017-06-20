@@ -24,7 +24,6 @@ export default class Base extends Component {
   }
   componentWillReceiveProps (nextProps) {
     const { url, playing, volume, playbackRate } = this.props
-    console.log('PLAYER RECEIVES PROPS', nextProps)
     // Invoke player methods based on incoming props
     if (url !== nextProps.url && nextProps.url) {
       this.seekOnPlay = null
