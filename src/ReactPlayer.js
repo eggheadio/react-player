@@ -76,6 +76,8 @@ export default class ReactPlayer extends Component {
       }
       this.prevLoaded = loaded
       this.prevPlayed = played
+
+      console.log(progress, duration)
     }
     this.progressTimeout = setTimeout(this.progress, this.props.progressFrequency)
   }
