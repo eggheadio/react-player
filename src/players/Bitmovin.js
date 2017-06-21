@@ -37,10 +37,7 @@ export default class Bitmovin extends Base {
       this.loadingSDK = false
       this.player = window.bitmovin.player(className);
       this.player.setup(this.getConfig()).then((value) => {
-        this.player.addEventHandler(this.player.EVENT.ON_PLAY, this.onPlay)
-        this.player.addEventHandler(this.player.EVENT.ON_PAUSE, onPause)
-        this.player.addEventHandler(this.player.EVENT.ON_PLAYBACK_FINISHED, onEnded)
-        this.player.addEventHandler(this.player.EVENT.ON_TIME_CHANGED, onPlayerProgress)
+        this.addEventListeners()
         this.onReady()
       }, (reason) => {
         console.error("Error while creating bitdash player instance", reason);
@@ -66,14 +63,33 @@ export default class Bitmovin extends Base {
     return url && url.match(MATCH_URL)[2]
   }
 
+  addEventListeners() {
+    const {onPause, onEnded, onPlayerProgress} = this.props
+    this.player.addEventHandler(this.player.EVENT.ON_PLAY, this.onPlay)
+    this.player.addEventHandler(this.player.EVENT.ON_PAUSE, onPause)
+    this.player.addEventHandler(this.player.EVENT.ON_PLAYBACK_FINISHED, onEnded)
+    this.player.addEventHandler(this.player.EVENT.ON_TIME_CHANGED, onPlayerProgress)
+  }
+
+  removeListeners() {
+    const {onPause, onEnded, onPlayerProgress} = this.props
+    this.player.removeEventHandler(this.player.EVENT.ON_PLAY, this.onPlay)
+    this.player.removeEventHandler(this.player.EVENT.ON_PAUSE, onPause)
+    this.player.removeEventHandler(this.player.EVENT.ON_PLAYBACK_FINISHED, onEnded)
+    this.player.removeEventHandler(this.player.EVENT.ON_TIME_CHANGED, onPlayerProgress)
+  }
+
   load(url) {
 
     console.log('LOAD VIDEO', url)
     const id = this.getID(url)
     if (this.isReady) {
-      this.player.load(this.getConfig().source)
-      this.props.onReady()
-      this.onReady()
+      this.removeListeners()
+      this.player.load(this.getConfig().source).then(() => {
+        this.addEventListeners()
+        this.props.onReady()
+        this.onReady()
+      })
     }
   }
 
