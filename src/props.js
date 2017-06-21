@@ -7,6 +7,7 @@ export const propTypes = {
   wistia_url: oneOfType([ string, array ]),
   hls_url: oneOfType([ string, array ]),
   dash_url: oneOfType([ string, array ]),
+  poster: string,
   playing: bool,
   loop: bool,
   controls: bool,

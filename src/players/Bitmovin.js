@@ -22,6 +22,7 @@ export default class Bitmovin extends Base {
         dash: this.props.dash_url,
         hls: this.props.hls_url
       },
+      poster: this.props.poster,
       skin: {screenLogoImage: ""}
     };
   }
