@@ -4,6 +4,9 @@ const { string, bool, number, array, oneOfType, shape, object, func } = PropType
 
 export const propTypes = {
   url: oneOfType([ string, array ]),
+  wistia_url: oneOfType([ string, array ]),
+  hls_url: oneOfType([ string, array ]),
+  dash_url: oneOfType([ string, array ]),
   playing: bool,
   loop: bool,
   controls: bool,

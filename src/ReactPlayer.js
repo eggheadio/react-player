@@ -25,8 +25,10 @@ export default class ReactPlayer extends Component {
     clearTimeout(this.progressTimeout)
   }
   shouldComponentUpdate (nextProps) {
+    const url = this.props.dash_url || this.props.hls_url || this.props.wistia_url
+    const nextUrl = nextProps.dash_url || nextProps.hls_url || nextProps.wistia_url
     return (
-      this.props.url !== nextProps.url ||
+      url !== nextUrl ||
       this.props.playing !== nextProps.playing ||
       this.props.volume !== nextProps.volume ||
       this.props.playbackRate !== nextProps.playbackRate ||
@@ -54,7 +56,8 @@ export default class ReactPlayer extends Component {
     return fractionPlayed * duration
   }
   progress = () => {
-    if (this.props.url && this.player) {
+    const hasUrl = this.props.dash_url || this.props.hls_url || this.props.wistia_url
+    if (hasUrl && this.player) {
       const loaded = this.player.getFractionLoaded() || 0
       const played = this.player.getFractionPlayed() || 0
       const duration = this.player.getDuration()
@@ -82,11 +85,15 @@ export default class ReactPlayer extends Component {
   }
   renderPlayers () {
     // Build array of players to render based on URL and preload config
-    const { url, youtubeConfig, vimeoConfig, dailymotionConfig } = this.props
+    const { youtubeConfig, vimeoConfig, dailymotionConfig } = this.props
+    const url = this.props.dash_url || this.props.hls_url || this.props.wistia_url
+
+    console.log('*************** MEDIA URL', url)
     const players = []
     if (YouTube.canPlay(url)) {
       players.push(YouTube)
     } else if (Bitmovin.canPlay(url)) {
+      console.log('-------- BITMOVIN', url)
       players.push(Bitmovin)
     } else if (SoundCloud.canPlay(url)) {
       players.push(SoundCloud)
@@ -101,6 +108,7 @@ export default class ReactPlayer extends Component {
     } else if (Vidme.canPlay(url)) {
       players.push(Vidme)
     } else if (Wistia.canPlay(url)) {
+      console.log('-------- WISTIA', url)
       players.push(Wistia)
     } else if (url) {
       // Fall back to FilePlayer if nothing else can play the URL
@@ -122,7 +130,8 @@ export default class ReactPlayer extends Component {
     this.player = player
   }
   renderPlayer = Player => {
-    const active = Player.canPlay(this.props.url)
+    const url = this.props.dash_url || this.props.hls_url || this.props.wistia_url
+    const active = Player.canPlay(url)
     const { youtubeConfig, vimeoConfig, dailymotionConfig, ...activeProps } = this.props
     const props = active ? { ...activeProps, ref: this.ref } : {}
     // Only youtube and vimeo config passed to

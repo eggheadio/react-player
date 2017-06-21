@@ -19,7 +19,8 @@ export default class Bitmovin extends Base {
     return {
       key: "56231f1a-2845-4d2e-a432-07436d3f4958",
       source: {
-        dash: this.props.url
+        dash: this.props.dash_url,
+        hls: this.props.hls_url
       },
       skin: {screenLogoImage: ""}
     };
@@ -27,7 +28,8 @@ export default class Bitmovin extends Base {
 
   componentDidMount() {
     const {onPause, onEnded, onPlayerProgress} = this.props
-    const id = this.getID(this.props.url)
+    const url = this.props.dash_url || this.props.hls_url || this.props.wistia_url
+    const id = this.getID(url)
     const className = `bitmovin-player-${id}`
 
     this.loadingSDK = true
@@ -119,12 +121,13 @@ export default class Bitmovin extends Base {
   }
 
   render() {
-    const id = this.getID(this.props.url)
+    const url = this.props.dash_url || this.props.hls_url || this.props.wistia_url
+    const id = this.getID(url)
     const className = `bitmovin-player-${id}`
     const style = {
       width: '100%',
       height: '100%',
-      display: this.props.url ? 'block' : 'none'
+      display: url ? 'block' : 'none'
     }
     return (
       <div id={className} className={className} style={style} />

@@ -13,13 +13,14 @@ export default class Wistia extends Base {
     return MATCH_URL.test(url)
   }
   componentDidMount () {
-    const { onStart, onPause, onEnded, onPlayerProgress } = this.props
     this.loadingSDK = true
     this.getSDK().then(() => {
+      console.log('WISTIA SDK LOADED', this.getID(this.props.wistia_url))
       window._wq = window._wq || []
       window._wq.push({
-        id: this.getID(this.props.url),
+        id: this.getID(this.props.wistia_url),
         onReady: player => {
+          console.log('WISTIA PLAYER READY')
           this.player = player
           this.rebind()
           this.onReady()
@@ -58,6 +59,7 @@ export default class Wistia extends Base {
     })
   }
   getID (url) {
+    console.log('WISTIA_ID', url && url.match(MATCH_URL)[4])
     return url && url.match(MATCH_URL)[4]
   }
   load (url) {
@@ -112,7 +114,7 @@ export default class Wistia extends Base {
     return null
   }
   render () {
-    const id = this.getID(this.props.url)
+    const id = this.getID(this.props.wistia_url)
     const className = `wistia_embed wistia_async_${id} videoFoam=true playerColor=171e27`
     const style = {
       width: '100%',
