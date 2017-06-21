@@ -23,15 +23,17 @@ export default class Base extends Component {
     this.mounted = false
   }
   componentWillReceiveProps (nextProps) {
-    const { url, playing, volume, playbackRate } = this.props
+    const { playing, volume, playbackRate } = this.props
+    const url = this.props.dash_url || this.props.hls_url || this.props.wistia_url || this.props.url
+    const nextUrl = nextProps.dash_url || nextProps.hls_url || nextProps.wistia_url
     // Invoke player methods based on incoming props
-    if (url !== nextProps.url && nextProps.url) {
+    if (url !== nextUrl && nextUrl) {
       this.seekOnPlay = null
       this.startOnPlay = true
       this.load(nextProps.url)
     }
 
-    if (url && !nextProps.url) {
+    if (url && !nextUrl) {
       this.stop()
       clearTimeout(this.updateTimeout)
     }
@@ -53,7 +55,9 @@ export default class Base extends Component {
     }
   }
   shouldComponentUpdate (nextProps) {
-    return this.props.url !== nextProps.url
+    const url = this.props.dash_url || this.props.hls_url || this.props.wistia_url
+    const nextUrl = nextProps.dash_url || nextProps.hls_url || nextProps.wistia_url
+    return url !== nextUrl
   }
   seekTo (fraction) {
     // When seeking before player is ready, store value and seek later

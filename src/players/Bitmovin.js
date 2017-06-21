@@ -67,9 +67,11 @@ export default class Bitmovin extends Base {
   }
 
   load(url) {
+
+    console.log('LOAD VIDEO', url)
     const id = this.getID(url)
     if (this.isReady) {
-      this.player.replaceWith(id)
+      this.player.load(this.getConfig().source)
       this.props.onReady()
       this.onReady()
     }
