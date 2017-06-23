@@ -15,14 +15,16 @@ export default class Bitmovin extends Base {
     return MATCH_URL.test(url)
   }
 
-  getConfig() {
+  getConfig(props) {
+    const {dash_url, hls_url, poster} = props || this.props
+    console.log('CONFIG POSTER *%*%*%', poster)
     return {
       key: "56231f1a-2845-4d2e-a432-07436d3f4958",
       source: {
-        dash: this.props.dash_url,
-        hls: this.props.hls_url
+        dash: dash_url,
+        hls: hls_url
       },
-      poster: this.props.poster,
+      poster: poster,
       skin: {screenLogoImage: ""}
     };
   }
@@ -38,6 +40,7 @@ export default class Bitmovin extends Base {
       this.loadingSDK = false
       this.player = window.bitmovin.player(className);
       this.player.setup(this.getConfig()).then((value) => {
+        this.player.setPosterImage(this.props.poster)
         this.addEventListeners()
         this.onReady()
       }, (reason) => {
@@ -80,13 +83,14 @@ export default class Bitmovin extends Base {
     this.player.removeEventHandler(this.player.EVENT.ON_TIME_CHANGED, onPlayerProgress)
   }
 
-  load(url) {
-
-    console.log('LOAD VIDEO', url)
-    const id = this.getID(url)
+  load(nextProps) {
+    var nextUrl = nextProps.dash_url || nextProps.hls_url;
+    console.log('LOAD VIDEO', nextUrl)
+    const id = this.getID(nextUrl)
     if (this.isReady) {
       this.removeListeners()
-      this.player.load(this.getConfig().source).then(() => {
+      this.player.load(this.getConfig(nextProps).source).then(() => {
+        this.player.setPosterImage(nextProps.poster)
         this.addEventListeners()
         this.props.onReady()
         this.onReady()

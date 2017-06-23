@@ -15,12 +15,10 @@ export default class Wistia extends Base {
   componentDidMount () {
     this.loadingSDK = true
     this.getSDK().then(() => {
-      console.log('WISTIA SDK LOADED', this.getID(this.props.wistia_url))
       window._wq = window._wq || []
       window._wq.push({
-        id: this.getID(this.props.wistia_url),
+        id: this.getID(this.props.wistia_url || this.props.url),
         onReady: player => {
-          console.log('WISTIA PLAYER READY')
           this.player = player
           this.rebind()
           this.onReady()
@@ -62,12 +60,12 @@ export default class Wistia extends Base {
     console.log('WISTIA_ID', url && url.match(MATCH_URL)[4])
     return url && url.match(MATCH_URL)[4]
   }
-  load (url) {
-    const id = this.getID(url)
+  load (nextProps) {
+    const id = this.getID(nextProps.wistia_url || nextProps.url)
     this.unbind()
     this.player.replaceWith(id)
     window._wq.push({
-      id: this.getID(url),
+      id: id,
       onReady: player => {
         this.player = player
         this.rebind()

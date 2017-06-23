@@ -30,7 +30,7 @@ export default class Base extends Component {
     if (url !== nextUrl && nextUrl) {
       this.seekOnPlay = null
       this.startOnPlay = true
-      this.load(nextProps.url)
+      this.load(nextProps)
     }
 
     if (url && !nextUrl) {
