@@ -17,7 +17,7 @@ export default class Wistia extends Base {
     this.getSDK().then(() => {
       window._wq = window._wq || []
       window._wq.push({
-        id: this.getID(this.props.wistia_url || this.props.url),
+        id: this.getID(this.props.wistia_url),
         onReady: player => {
           this.player = player
           this.rebind()
@@ -59,7 +59,6 @@ export default class Wistia extends Base {
     })
   }
   getID (url) {
-    console.log('WISTIA_ID', url && url.match(MATCH_URL)[4])
     return url && url.match(MATCH_URL)[4]
   }
   load (nextProps) {
@@ -119,7 +118,7 @@ export default class Wistia extends Base {
     const style = {
       width: '100%',
       height: '100%',
-      display: this.props.url ? 'block' : 'none'
+      display: this.props.wistia_url ? 'block' : 'none'
     }
     return (
       <div className={className} style={style} />

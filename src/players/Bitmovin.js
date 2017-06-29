@@ -17,7 +17,6 @@ export default class Bitmovin extends Base {
 
   getConfig(props) {
     const {dash_url, hls_url, poster} = props || this.props
-    console.log('CONFIG POSTER *%*%*%', poster)
     return {
       key: "56231f1a-2845-4d2e-a432-07436d3f4958",
       source: {
@@ -85,7 +84,6 @@ export default class Bitmovin extends Base {
 
   load(nextProps) {
     var nextUrl = nextProps.dash_url || nextProps.hls_url;
-    console.log('LOAD VIDEO', nextUrl)
     const id = this.getID(nextUrl)
     if (this.isReady) {
       this.removeListeners()

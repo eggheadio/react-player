@@ -88,12 +88,10 @@ export default class ReactPlayer extends Component {
     const { youtubeConfig, vimeoConfig, dailymotionConfig } = this.props
     const url = this.props.dash_url || this.props.hls_url || this.props.wistia_url
 
-    console.log('*************** MEDIA URL', url)
     const players = []
     if (YouTube.canPlay(url)) {
       players.push(YouTube)
     } else if (Bitmovin.canPlay(url)) {
-      console.log('-------- BITMOVIN', url)
       players.push(Bitmovin)
     } else if (SoundCloud.canPlay(url)) {
       players.push(SoundCloud)
@@ -108,7 +106,6 @@ export default class ReactPlayer extends Component {
     } else if (Vidme.canPlay(url)) {
       players.push(Vidme)
     } else if (Wistia.canPlay(url)) {
-      console.log('-------- WISTIA', url)
       players.push(Wistia)
     } else if (url) {
       // Fall back to FilePlayer if nothing else can play the URL

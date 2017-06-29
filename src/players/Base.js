@@ -90,6 +90,7 @@ export default class Base extends Component {
     const { onReady, playing, onDuration } = this.props
     this.isReady = true
     this.loadingSDK = false
+
     onReady()
     if (playing || this.preloading) {
       this.preloading = false
