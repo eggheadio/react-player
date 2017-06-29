@@ -38,11 +38,13 @@ export default class Wistia extends Base {
 
   unbind () {
     const {onStart, onPause, onEnded, onPlayerProgress} = this.props
-    this.player.unbind('start', onStart)
-    this.player.unbind('play', this.onPlay)
-    this.player.unbind('pause', onPause)
-    this.player.unbind('end', onEnded)
-    this.player.unbind('secondchange', onPlayerProgress)
+    if(this.player) {
+      this.player.unbind('start', onStart)
+      this.player.unbind('play', this.onPlay)
+      this.player.unbind('pause', onPause)
+      this.player.unbind('end', onEnded)
+      this.player.unbind('secondchange', onPlayerProgress)
+    }
   }
   getSDK () {
     return new Promise((resolve, reject) => {
